@@ -9,6 +9,11 @@ import java.net.URL;
 
 public class test {
   public static void main(String[] args) {
+    if(args.length<2){
+    	System.out.println("Arguments are invalid.");
+
+    	return;
+    }
     Runnable d = new DownloadData(args[0],args[1]);
     Thread t = new Thread(d);
     t.start();
