@@ -8,52 +8,51 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class test {
+  public static void main(String[] args) {
+    Runnable d = new DownloadData(args[0],args[1]);
+    Thread t = new Thread(d);
+    t.start();
+  }
 
-	public static void main(String[] args) {
-		Runnable d = new DownloadData(args[0]);
-		Thread t = new Thread(d);
-		t.start();
-	}
-
-	public static void doneLoadingDisplay(String text) {
-		System.out.print(text);
-		try {
-			FileOutputStream os = new FileOutputStream("test.txt");
-			os.write(text.getBytes());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+  public static void doneLoadingDisplay(String text,String fileName) {
+    System.out.print(text);
+    try {
+      FileOutputStream os = new FileOutputStream(fileName);
+      os.write(text.getBytes());
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }
-
 class DownloadData implements Runnable {
-	public DownloadData(String url) {
-		try {
-			this.url = new URL(url);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-	}
+  String fileName;
+  public DownloadData(String url,String fileName) {
+    this.fileName=fileName;
+    try {
+      this.url = new URL(url);
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    }
+  }
 
-	URL url;
-	InputStream is = null;
-	BufferedReader br;
+  URL url;
+  InputStream is = null;
+  BufferedReader br;
 
-	public void run() {
+  public void run() {
 
-		try {
-			is = url.openStream();
-			br = new BufferedReader(new InputStreamReader(is));
-			test.doneLoadingDisplay(br.readLine());
-			is.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    try {
+      is = url.openStream();
+      br = new BufferedReader(new InputStreamReader(is));
+      test.doneLoadingDisplay(br.readLine(),fileName);
+      is.close();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
 
-	}
+  }
 
 }
